@@ -3,12 +3,13 @@ from rest_framework.views    import APIView
 from rest_framework          import viewsets
 from rest_framework.response import Response
 
-from profiles_api            import serializers
+from .serializers import HelloSerializer, UserProfileSerializer
+from .models      import UserProfile
 
 
 class HelloApiView(APIView):
     """Test API View"""
-    serializer_class = serializers.HelloSerializer          # What data to expect when making POST, PUT, PATCH, DELETE requests
+    serializer_class = HelloSerializer          # What data to expect when making POST, PUT, PATCH, DELETE requests
 
     def get(self, request, format=None):
         """Return a list of APIView features"""
@@ -47,7 +48,7 @@ class HelloApiView(APIView):
 
 class HelloViewSet(viewsets.ViewSet):
     """Test API ViewSet"""
-    serializer_class = serializers.HelloSerializer
+    serializer_class = HelloSerializer
 
     def list(self, request):
         """Return a hello message"""
@@ -85,3 +86,11 @@ class HelloViewSet(viewsets.ViewSet):
     def destroy(self, request, pk=None):
         """Removing an object"""
         return Response({'http_method': 'DELETE'})
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """Handle creating and updating profiles"""
+
+    serializer_class = UserProfileSerializer
+    queryset         = UserProfile.objects.all()
+
