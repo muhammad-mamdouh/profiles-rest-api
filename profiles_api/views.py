@@ -5,7 +5,7 @@ from rest_framework.filters         import SearchFilter
 from rest_framework.response        import Response
 from rest_framework.authentication  import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.permissions     import IsAuthenticatedOrReadOnly
+from rest_framework.permissions     import IsAuthenticated #IsAuthenticatedOrReadOnly
 from rest_framework.settings        import api_settings
 
 from .serializers import HelloSerializer, UserProfileSerializer, ProfileFeedItemSerializer
@@ -119,10 +119,7 @@ class UserProfileFeedViewSet(viewsets.ModelViewSet):
     serializer_class       = ProfileFeedItemSerializer
     authentication_classes = (TokenAuthentication,)
     queryset               = ProfileFeedItem.objects.all()
-    permission_classes     = (
-        IsAuthenticatedOrReadOnly,
-        UpdateOwnStatus,
-    )
+    permission_classes     = (IsAuthenticated, UpdateOwnStatus)
 
     def perform_create(self, serializer):
         """Sets the user profile to the logged in user"""
